@@ -1,0 +1,14 @@
+line-bot-sdk
+flask
+gunicorn
+beautifulsoup4
+imgurpython
+requests
+configparser
+json5== 0.7.0
+random2==1.0.1
+psycopg2==2.8.2
+DateTime==4.3
+APScheduler==3.6.0
+gevent==1.4.0
+lxml==3.4.2
