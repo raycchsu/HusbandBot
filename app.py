@@ -10,9 +10,9 @@ import datetime
 from gevent.pywsgi import WSGIServer
 import realtime_stock
 
-
 from flask import Flask, request, abort
 
+# LineBot
 from linebot import (
     LineBotApi, WebhookHandler
 )

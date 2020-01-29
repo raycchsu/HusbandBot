@@ -21,7 +21,7 @@ from linebot.models import *
 # Channel Access Token
 line_bot_api = LineBotApi('SKcw6yliPxUKOU05JZxPuqOInQUTnVev/3nSYgcmfXbraxoKZjHqoAwCH+p9ud94FD3zgQ/ql5AcBDOfFkXRpSvIpiFesG6dttzPFqGbtM3kG7sBA1WdHi+jkpNilTCMUrnv6+Pa7jtd5acNfQuRSwdB04t89/1O/w1cDnyilFU=')
 # Channel Secret
-handler = WebhookHandler('6f5886e5b3f861f12682af9791b5156e')
+handler = WebhookHandler('522121ef546e53b52e77236213baf5db')
 
 
 class push_message():
