@@ -19,7 +19,7 @@ from linebot.exceptions import (
 )
 from linebot.models import *
 # Channel Access Token
-line_bot_api = LineBotApi('SKcw6yliPxUKOU05JZxPuqOInQUTnVev/3nSYgcmfXbraxoKZjHqoAwCH+p9ud94FD3zgQ/ql5AcBDOfFkXRpSvIpiFesG6dttzPFqGbtM3kG7sBA1WdHi+jkpNilTCMUrnv6+Pa7jtd5acNfQuRSwdB04t89/1O/w1cDnyilFU=')
+line_bot_api = LineBotApi('hyMMOPQMt8aJg0JFMTxAcBJXT7BByqSQsxkeKIoXx9sxOwlj1NCA6dKjWfLHGXBxmZp8YE+SJxrq/IutRQpubeZKg5+Lxaz2CNn3yc7zj5YX5ypMaXtC+IeGhg1hQt6X7ual1LtyznPn+nCFFa7h5gdB04t89/1O/w1cDnyilFU=')
 # Channel Secret
 handler = WebhookHandler('522121ef546e53b52e77236213baf5db')
 

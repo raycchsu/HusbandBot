@@ -12,6 +12,9 @@ import realtime_stock
 
 from flask import Flask, request, abort
 
+# ＤataClass
+from Cls_GetData import GetDataSet
+
 # LineBot
 from linebot import (
     LineBotApi, WebhookHandler
@@ -28,7 +31,7 @@ line_bot_api = LineBotApi('hyMMOPQMt8aJg0JFMTxAcBJXT7BByqSQsxkeKIoXx9sxOwlj1NCA6
 # Channel Secret
 handler = WebhookHandler('522121ef546e53b52e77236213baf5db')
 
-sean_user_id = 'U358bc616907dc55b5c5b31738997c68c'
+husband_bot_id = 'U358bc616907dc55b5c5b31738997c68c'
 
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
@@ -244,15 +247,17 @@ def panx():
 
 # 查詢油價
 def oil_price():
-    target_url = 'https://gas.goodlife.tw/'
-    rs = requests.session()
-    res = rs.get(target_url, verify=False)
-    soup = BeautifulSoup(res.text, 'html.parser')
-    title = soup.select('#main')[0].text.replace('\n', '').split('(')[0]
-    gas_price = soup.select('#gas-price')[0].text.replace('\n\n\n', '').replace(' ', '')
-    cpc = soup.select('#cpc')[0].text.replace(' ', '')
-    content = '{}\n{}{}'.format(title, gas_price, cpc)
-    return content
+    test = GetDataSet('https://vipmember.tmtd.cpc.com.tw/opendata/ListPriceWebService.asmx/getCPCMainProdListPrice_XML')
+    oilData = test.get_oil_price()
+    #target_url = 'https://gas.goodlife.tw/'
+    #rs = requests.session()
+    #res = rs.get(target_url, verify=False)
+    #soup = BeautifulSoup(res.text, 'html.parser')
+    #title = soup.select('#main')[0].text.replace('\n', '').split('(')[0]
+    #gas_price = soup.select('#gas-price')[0].text.replace('\n\n\n', '').replace(' ', '')
+    #cpc = soup.select('#cpc')[0].text.replace(' ', '')
+    #content = '{}\n{}{}'.format(title, gas_price, cpc)
+    return oilData.text
 
 #確認句子中地點
 def getLocation(sentence):
