@@ -39,6 +39,20 @@ class GetDataSet:
             print('不明原因中斷:')
             traceback.print_exc()
 
+    # 查詢蘋果新聞
+    def apple_news():
+        target_url = 'https://tw.appledaily.com/new/realtime'
+        print('Start parsing appleNews....')
+        rs = requests.session()
+        res = rs.get(target_url, verify=False)
+        soup = BeautifulSoup(res.text, 'html.parser')
+        content = ""
+        for index, data in enumerate(soup.select('.rtddt a'), 0):
+            if index == 5:
+                return content
+            link = data['href']
+            content += '{}\n\n'.format(link)
+        return content
 
 
 if __name__ ==  '__main__':
