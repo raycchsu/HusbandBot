@@ -32,7 +32,8 @@ class GetDataSet:
             return datatframe
 
         except (ValueError, EOFError, KeyboardInterrupt):
-            return None 
+            errorMsg = '資料擷取錯誤，請稍晚再試!'
+            return errorMsg
 
         except:
             print('不明原因中斷:')
