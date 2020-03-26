@@ -248,8 +248,8 @@ def panx():
 # 查詢油價
 def oil_price():
     test = GetDataSet('https://vipmember.tmtd.cpc.com.tw/opendata/ListPriceWebService.asmx/getCPCMainProdListPrice_XML')
-    oilData = test.get_oil_price()
-    return oilData.text
+    oilData = test.get_oil_price().values
+    return oilData
 
 #確認句子中地點
 def getLocation(sentence):
