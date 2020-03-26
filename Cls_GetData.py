@@ -42,4 +42,4 @@ class GetDataSet:
 
 if __name__ ==  '__main__':
     test = GetDataSet('https://vipmember.tmtd.cpc.com.tw/opendata/ListPriceWebService.asmx/getCPCMainProdListPrice_XML')
-    test.get_oil_price().values
+    print(test.get_oil_price().keys)
