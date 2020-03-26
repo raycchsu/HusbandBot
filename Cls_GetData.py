@@ -36,8 +36,9 @@ class GetDataSet:
             return errorMsg
 
         except:
-            print('不明原因中斷:')
-            traceback.print_exc()
+            errorMsg = '資料擷取錯誤，請稍晚再試!'
+            return errorMsg
+            #traceback.print_exc()
 
 
 if __name__ ==  '__main__':
