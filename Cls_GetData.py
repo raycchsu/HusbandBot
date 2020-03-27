@@ -11,7 +11,8 @@ class GetDataSet:
 
     def get_oil_price(self):
         try:
-            root = etree.fromstring(requests.get(self.url).text)
+            headers = {'user-agent': 'my-app/0.0.1'}
+            root = etree.fromstring(requests.get(self.url, headers=headers).text)
             columns = ["型別名稱", "產品編號", "產品名稱", "包裝", "銷售對象", "交貨地點", "計價單位", "參考牌價", "營業稅", "貨物稅", "牌價生效時間", "備註"]
             datatframe = pd.DataFrame(columns = columns)
             content = 'Null Data'
@@ -32,7 +33,7 @@ class GetDataSet:
                 datatframe = datatframe.append(pd.Series([typeName, idNum, prodName, package, target, local,unit,ref_money,tax_1, tax_2, time, note], index = columns), ignore_index = True)
                 
                 #for Line output string
-                content = content + prodName + ':' + unit + ':' + ref_money +' %0D%0A'
+                content = content + prodName + ':' + unit + ':' + ref_money +' １%0D%0A'
             
             return content
             #return datatframe
