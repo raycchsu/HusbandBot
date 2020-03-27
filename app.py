@@ -497,13 +497,14 @@ def handle_message(event):
     text = event.message.text
     ptt_hot = ["八卦","廢文","鄉民"]
     ptt_joke = ["joke","笑話","Joke"]
-    ptt_stock = ["Stock","stock","股票討論","ptt股票"]
+    ptt_stock = ["Stock","stock","股票討論","ptt股票","股票"]
+    ptt_finance = ["finance","Finance","金融討論","金融"]
     oil = ["油價查詢","油價"]
 
 
     if db_find(text) is not None :
         reply_text = db_find(text)
-    elif text[0:5] =="宣皓我教你":
+    elif text[0:5] =="寶包我教你":
         text_list =text.split(" ")
         if len(text_list)==3:
             if text.split(" ")[1] !=" " and text.split(" ")[2] !=" ":
@@ -511,9 +512,9 @@ def handle_message(event):
                 reply = text.split(" ")[2]
                 reply_text = insert_learn(key_words,reply)
             else:
-                reply_text = "正確寫入規則方式為 宣皓我教你 [輸入關鍵字] [回應文字]"
+                reply_text = "正確寫入規則方式為 寶包我教你 [輸入關鍵字] [回應文字]"
         else:
-            reply_text = "正確寫入規則方式為 宣皓我教你 [輸入關鍵字] [回應文字]"
+            reply_text = "正確寫入規則方式為 寶包我教你 [輸入關鍵字] [回應文字]"
     elif "推播" in text and "天氣" in text and "查詢" not in text:
         if getLocation(text.replace("台","臺")) != None:
             location = list(getLocation(text.replace("台","臺")))[1]

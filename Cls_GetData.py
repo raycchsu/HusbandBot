@@ -39,7 +39,52 @@ class GetDataSet:
             errorMsg = '資料擷取錯誤，請稍晚再試!'
             return errorMsg
             #traceback.print_exc()
+    # 查詢PTT
+    def ptt_board(board_name):
+        rs = requests.session()
+        # 先檢查網址是否包含'over18'字串 ,如有則為18禁網站
+        if (rs.get('https://www.ptt.cc/bbs/'+ board_name +'/index.html', verify=False).url.find('over18') > -1):
+            print("18禁網頁")
+            load = {
+                'from': '/bbs/' + board_name + '/index.html',
+                'yes': 'yes'
+            }
+            res = rs.post('https://www.ptt.cc/ask/over18', verify=False, data=load)
+        else:
+            res = rs.get('https://www.ptt.cc/bbs/'+ board_name +'/index.html', verify=False)
+        soup = BeautifulSoup(res.text, 'html.parser')
+        all_page_url = soup.select('.btn.wide')[1]['href']
+        start_page = get_page_number(all_page_url)
+        page_term = 5# crawler count
+        index_list = []
+        article_list = []
+        for page in range(start_page, start_page - page_term, -1):
+            page_url = 'https://www.ptt.cc/bbs/'+ board_name +'/index{}.html'.format(page)
+            index_list.append(page_url)
 
+        # 抓取 文章標題 網址 推文數
+        while index_list:
+            index = index_list.pop(0)
+            res = rs.get(index, verify=False)
+            # 如網頁忙線中,則先將網頁加入 index_list 並休息1秒後再連接
+            if res.status_code != 200:
+                index_list.append(index)
+                # print u'error_URL:',index
+                # time.sleep(1)
+            else:
+                article_list += craw_page(res)
+
+                # print u'OK_URL:', index
+                # time.sleep(0.05)
+        content = ''
+        #以推文數排序
+        article_list.sort(key= lambda x : x['rate'], reverse = True)
+        #因line無法傳送過多資訊，只取前15筆
+        for article in article_list[0:15]:
+            data = '[{} push] {}\n{}\n\n'.format(article.get('rate', None), article.get('title', None),
+                                                 article.get('url', None))
+            content += data
+        return content
 
 if __name__ ==  '__main__':
     test = GetDataSet('https://vipmember.tmtd.cpc.com.tw/opendata/ListPriceWebService.asmx/getCPCMainProdListPrice_XML')
