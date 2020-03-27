@@ -12,4 +12,8 @@ DateTime==4.3
 APScheduler==3.6.0
 gevent==1.4.0
 lxml==3.4.2
+<<<<<<< HEAD
 pandas
+=======
+pandas
+>>>>>>> a6d4b8a8f7f8ad90f1bd128aea38d618c455ef3f
