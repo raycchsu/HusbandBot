@@ -4,5 +4,3 @@ test = GetDataSet('https://vipmember.tmtd.cpc.com.tw/opendata/ListPriceWebServic
 oilDataFrame = test.get_oil_price()
 content = oilDataFrame[['產品名稱', '計價單位', '參考牌價']][:3].to_string()
 print(content)
-    
-

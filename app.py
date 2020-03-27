@@ -89,6 +89,7 @@ def apple_news():
         link = data['href']
         content += '{}\n\n'.format(link)
     return content
+
 # 查詢PTT頁面數量
 def get_page_number(content):
     start_index = content.find('index')
@@ -245,7 +246,7 @@ def panx():
         content += '{}\n{}\n\n'.format(title, link)
     return content
 
-# 查詢油價
+# 查詢油價(new)
 def oil_price():
     test = GetDataSet('https://vipmember.tmtd.cpc.com.tw/opendata/ListPriceWebService.asmx/getCPCMainProdListPrice_XML')
     oilDataFrame = test.get_oil_price()
