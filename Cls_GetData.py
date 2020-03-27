@@ -47,6 +47,7 @@ class GetDataSet:
             #traceback.print_exc()
     
     # 查詢PTT
+    """
     def ptt_board(board_name):
         rs = requests.session()
         # 先檢查網址是否包含'over18'字串 ,如有則為18禁網站
@@ -92,7 +93,8 @@ class GetDataSet:
                                                  article.get('url', None))
             content += data
         return content
-
+        """
+        
 if __name__ ==  '__main__':
     test = GetDataSet('https://vipmember.tmtd.cpc.com.tw/opendata/ListPriceWebService.asmx/getCPCMainProdListPrice_XML')
     print(test.get_oil_price().keys)
