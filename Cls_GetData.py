@@ -14,6 +14,7 @@ class GetDataSet:
             root = etree.fromstring(requests.get(self.url).text)
             columns = ["型別名稱", "產品編號", "產品名稱", "包裝", "銷售對象", "交貨地點", "計價單位", "參考牌價", "營業稅", "貨物稅", "牌價生效時間", "備註"]
             datatframe = pd.DataFrame(columns = columns)
+            content = 'Null Data'
 
             for node in root:
                 typeName = node.find("型別名稱").text if node is not None else None
@@ -29,7 +30,12 @@ class GetDataSet:
                 time = node.find("牌價生效時間").text if node is not None else None
                 note= node.find("備註").text if node is not None else None
                 datatframe = datatframe.append(pd.Series([typeName, idNum, prodName, package, target, local,unit,ref_money,tax_1, tax_2, time, note], index = columns), ignore_index = True)
-            return datatframe
+                
+                #for Line output string
+                content = content + prodName + ':' + unit + ':' + ref_money +'%0D%0A'
+            
+            return content
+            #return datatframe
 
         except (ValueError, EOFError, KeyboardInterrupt):
             errorMsg = '數值錯誤!請稍晚再試'
