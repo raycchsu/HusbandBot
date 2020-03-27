@@ -32,7 +32,7 @@ class GetDataSet:
                 datatframe = datatframe.append(pd.Series([typeName, idNum, prodName, package, target, local,unit,ref_money,tax_1, tax_2, time, note], index = columns), ignore_index = True)
                 
                 #for Line output string
-                content = content + prodName + ':' + unit + ':' + ref_money +'%0D%0A'
+                content = content + prodName + ':' + unit + ':' + ref_money +' %0D%0A'
             
             return content
             #return datatframe
@@ -94,7 +94,7 @@ class GetDataSet:
             content += data
         return content
         """
-        
+
 if __name__ ==  '__main__':
     test = GetDataSet('https://vipmember.tmtd.cpc.com.tw/opendata/ListPriceWebService.asmx/getCPCMainProdListPrice_XML')
     print(test.get_oil_price().keys)
