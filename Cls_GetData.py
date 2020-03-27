@@ -32,13 +32,14 @@ class GetDataSet:
             return datatframe
 
         except (ValueError, EOFError, KeyboardInterrupt):
-            errorMsg = '資料擷取錯誤，請稍晚再試!'
+            errorMsg = '數值錯誤!請稍晚再試'
             return errorMsg
 
         except:
             errorMsg = '資料擷取錯誤，請稍晚再試!'
             return errorMsg
             #traceback.print_exc()
+    
     # 查詢PTT
     def ptt_board(board_name):
         rs = requests.session()

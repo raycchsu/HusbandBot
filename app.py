@@ -250,8 +250,8 @@ def panx():
 def oil_price():
     test = GetDataSet('https://vipmember.tmtd.cpc.com.tw/opendata/ListPriceWebService.asmx/getCPCMainProdListPrice_XML')
     oilDataFrame = test.get_oil_price()
-    content = oilDataFrame[['產品名稱', '計價單位', '參考牌價']][:3].to_string()
-    return str(content)
+    content = str(oilDataFrame[['產品名稱', '計價單位', '參考牌價']][:3].to_string())
+    return content
 
 #確認句子中地點
 def getLocation(sentence):
