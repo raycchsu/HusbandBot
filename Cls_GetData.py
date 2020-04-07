@@ -11,6 +11,7 @@ class GetDataSet:
 
     def get_oil_price(self):
         try:
+            requests.session()
             headers = {'user-agent': 'my-app/0.0.1'}
             root = etree.fromstring(requests.get(self.url, headers=headers).text)
             columns = ["型別名稱", "產品編號", "產品名稱", "包裝", "銷售對象", "交貨地點", "計價單位", "參考牌價", "營業稅", "貨物稅", "牌價生效時間", "備註"]
