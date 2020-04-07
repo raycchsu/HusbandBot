@@ -15,7 +15,7 @@ class GetDataSet:
             root = etree.fromstring(requests.get(self.url, headers=headers).text)
             columns = ["型別名稱", "產品編號", "產品名稱", "包裝", "銷售對象", "交貨地點", "計價單位", "參考牌價", "營業稅", "貨物稅", "牌價生效時間", "備註"]
             datatframe = pd.DataFrame(columns = columns)
-            content = 'Null Data'
+            content = ''
 
             for node in root:
                 typeName = node.find("型別名稱").text if node is not None else None
