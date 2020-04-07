@@ -33,7 +33,7 @@ class GetDataSet:
                 datatframe = datatframe.append(pd.Series([typeName, idNum, prodName, package, target, local,unit,ref_money,tax_1, tax_2, time, note], index = columns), ignore_index = True)
                 
                 #for Line output string
-                content = content + prodName + ':' + unit + ':' + ref_money +' １%0D%0A'
+                content = content + '{}:{}:{} １%0D%0A'.format(prodName, unit, ref_money)
             
             return content
             #return datatframe
