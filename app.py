@@ -571,7 +571,8 @@ def handle_message(event):
     elif text == "PanX泛科技":
         reply_text = panx()
     elif text in oil:
-        reply_text = oil_price()
+        #reply_text = oil_price()
+         reply_text = 'v1.5'
     elif text in ptt_stock:
         reply_text = ptt_board("Stock")
     elif text == "電影":
