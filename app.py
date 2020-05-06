@@ -13,7 +13,8 @@ import realtime_stock
 from flask import Flask, request, abort
 
 # ＤataClass
-from Cls_GetData import GetDataSet
+from Cls_GetOil import OilDataSet
+from Cls_GetPtt import PttDataSet
 
 # LineBot
 from linebot import (
@@ -90,14 +91,16 @@ def apple_news():
         content += '{}\n\n'.format(link)
     return content
 
-# 查詢PTT頁面數量
+'''
+# 查詢PTT頁面數量(暫時不需要)
 def get_page_number(content):
     start_index = content.find('index')
     end_index = content.find('.html')
     page_number = content[start_index + 5: end_index]
     return int(page_number) + 1
-
-# 查詢PTT頁面內容
+'''
+''' 
+# 查詢PTT頁面內容(暫時不需要)
 def craw_page(res):
     soup_ = BeautifulSoup(res.text, 'html.parser')
     article_seq = []
@@ -133,52 +136,27 @@ def craw_page(res):
             # print('crawPage function error:',r_ent.find(class_="title").text.strip())
             print('本文已被刪除', e)
     return article_seq
-
+'''
 # 查詢PTT
 def ptt_board(board_name):
-    rs = requests.session()
-    # 先檢查網址是否包含'over18'字串 ,如有則為18禁網站
-    if (rs.get('https://www.ptt.cc/bbs/'+ board_name +'/index.html', verify=False).url.find('over18') > -1):
-        print("18禁網頁")
-        load = {
-            'from': '/bbs/' + board_name + '/index.html',
-            'yes': 'yes'
-        }
-        res = rs.post('https://www.ptt.cc/ask/over18', verify=False, data=load)
-    else:
-        res = rs.get('https://www.ptt.cc/bbs/'+ board_name +'/index.html', verify=False)
-    soup = BeautifulSoup(res.text, 'html.parser')
-    all_page_url = soup.select('.btn.wide')[1]['href']
-    start_page = get_page_number(all_page_url)
-    page_term = 5# crawler count
-    index_list = []
-    article_list = []
-    for page in range(start_page, start_page - page_term, -1):
-        page_url = 'https://www.ptt.cc/bbs/'+ board_name +'/index{}.html'.format(page)
-        index_list.append(page_url)
+    content=''
+    board = board_name
+    LastPage = PttDataSet.getLastPage(board)
+    
+    PttDataSet(['-b', board, '-i', str(LastPage-1), str(LastPage)])
+    
+    with open(board + '-' + str(LastPage-2) + '-' + str(LastPage) + '.json' , 'r') as reader:
+        data = json.loads(reader.read())
 
-    # 抓取 文章標題 網址 推文數
-    while index_list:
-        index = index_list.pop(0)
-        res = rs.get(index, verify=False)
-        # 如網頁忙線中,則先將網頁加入 index_list 並休息1秒後再連接
-        if res.status_code != 200:
-            index_list.append(index)
-            # print u'error_URL:',index
-            # time.sleep(1)
-        else:
-            article_list += craw_page(res)
+    # 以推文數排序
+    sorted_data = sorted(data['articles'], key=lambda x : x['Message-push-count'], reverse=True)
 
-            # print u'OK_URL:', index
-            # time.sleep(0.05)
-    content = ''
-    #以推文數排序
-    article_list.sort(key= lambda x : x['rate'], reverse = True)
-    #因line無法傳送過多資訊，只取前15筆
-    for article in article_list[0:15]:
-        data = '[{} push] {}\n{}\n\n'.format(article.get('rate', None), article.get('title', None),
+    # 因line無法傳送過多資訊，只取前15筆
+    for article in sorted_data[0:15]:
+        data = '[{} push] {}\n{}\n\n'.format(article.get('Message-push-count', None), article.get('article_title', None),
                                              article.get('url', None))
         content += data
+    
     return content
 
 # 查詢PTT熱門
@@ -248,11 +226,11 @@ def panx():
 
 # 查詢油價(new)
 def oil_price():
+    
     test = GetDataSet('https://vipmember.tmtd.cpc.com.tw/opendata/ListPriceWebService.asmx/getCPCMainProdListPrice_XML')
     
     #output Line string
     content = test.get_oil_price()
-
     #output DataFrame
     #oilDataFrame = test.get_oil_price()
     #content = str(oilDataFrame[['產品名稱', '計價單位', '參考牌價']][:3].to_string())
@@ -571,8 +549,7 @@ def handle_message(event):
     elif text == "PanX泛科技":
         reply_text = panx()
     elif text in oil:
-        #reply_text = oil_price()
-         reply_text = 'v1.5'
+        reply_text = oil_price()
     elif text in ptt_stock:
         reply_text = ptt_board("Stock")
     elif text == "電影":
