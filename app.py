@@ -145,7 +145,7 @@ def ptt_board(board_name):
     
     PttDataSet(['-b', board, '-i', str(LastPage-1), str(LastPage)])
     
-    with open(board + '-' + str(LastPage-2) + '-' + str(LastPage) + '.json' , 'r') as reader:
+    with open(board + '-' + str(LastPage-1) + '-' + str(LastPage) + '.json' , 'r') as reader:
         data = json.loads(reader.read())
 
     # 以推文數排序
