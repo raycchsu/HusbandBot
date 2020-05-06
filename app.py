@@ -227,7 +227,7 @@ def panx():
 # 查詢油價(new)
 def oil_price():
     
-    test = GetDataSet('https://vipmember.tmtd.cpc.com.tw/opendata/ListPriceWebService.asmx/getCPCMainProdListPrice_XML')
+    test = OilDataSet('https://vipmember.tmtd.cpc.com.tw/opendata/ListPriceWebService.asmx/getCPCMainProdListPrice_XML')
     
     #output Line string
     content = test.get_oil_price()
