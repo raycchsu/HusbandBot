@@ -149,11 +149,11 @@ def ptt_board(board_name):
         data = json.loads(reader.read())
 
     # 以推文數排序
-    sorted_data = sorted(data['articles'], key=lambda x : x['Message-push-count'], reverse=True)
+    sorted_data = sorted(data['articles'], key=lambda x : x['message-push-count'], reverse=True)
 
     # 因line無法傳送過多資訊，只取前15筆
     for article in sorted_data[0:15]:
-        data = '[{} push] {}\n{}\n\n'.format(article.get('Message-push-count', None), article.get('article_title', None),
+        data = '[{} push] {}\n{}\n\n'.format(article.get('message-push-count', None), article.get('article_title', None),
                                              article.get('url', None))
         content += data
     
