@@ -1,6 +1,7 @@
 import traceback
 import requests
 import pandas as pd
+import json
 import xml.etree.ElementTree as etree
 
 class OilDataSet:
@@ -49,8 +50,15 @@ class OilDataSet:
             errorMsg = '資料擷取錯誤，請稍晚再試!'
             return errorMsg
             #traceback.print_exc()
-    
+
+    ''' API concantenation of government public data '''
+    def oil_apiConnect(self):
+        res = requests.get(self.url, headers = self.headers)
+        res.encoding='utf-8'
+        results = json.loads(res.text)
+    return results
+
 
 if __name__ ==  '__main__':
-    test = GetDataSet('https://vipmember.tmtd.cpc.com.tw/opendata/ListPriceWebService.asmx/getCPCMainProdListPrice_XML')
+    test = GetDataSet('')
     print(test.get_oil_price().keys)
