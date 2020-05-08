@@ -53,10 +53,11 @@ class OilDataSet:
 
     ''' API concantenation of government public data '''
     def oil_apiConnect(self):
+        
         res = requests.get(self.url, headers = self.headers)
         res.encoding='utf-8'
-        results = json.loads(res.text)
-    return results
+        
+        return json.loads(res.text)
 
 
 if __name__ ==  '__main__':
