@@ -52,11 +52,12 @@ class OilDataSet:
             #traceback.print_exc()
 
     ''' API concantenation of government public data '''
+
     def oil_apiConnect(self):
-        
-        res = requests.get(self.url, headers = self.headers)
+        headers = self.headers
+        res = requests.get(self.url, headers = headers)
         res.encoding='utf-8'
-        
+
         return json.loads(res.text)
 
 
