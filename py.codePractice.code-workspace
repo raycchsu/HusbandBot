@@ -1,0 +1,13 @@
+{
+    "folders": [
+        {
+            "path": "."
+        },
+        {
+            "path": "../ptt-web-crawler-master"
+        }
+    ],
+    "settings": {
+        "git.ignoreLimitWarning": true
+    }
+}

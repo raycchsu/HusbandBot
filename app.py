@@ -476,6 +476,7 @@ def handle_message(event):
     insert_USER_ID(user_id)
     print("user_id =", user_id)
     text = event.message.text
+    love_word = ["我想你","我愛你","你在幹嘛","寶包在幹嘛","老公在幹嘛","寶包","笨蛋"]
     ptt_hot = ["八卦","廢文","鄉民"]
     ptt_joke = ["joke","笑話","Joke"]
     ptt_stock = ["Stock","stock","股票討論","ptt股票","股票"]
