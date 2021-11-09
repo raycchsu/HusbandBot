@@ -234,6 +234,17 @@ def oil_price():
     #content = str(oilDataFrame[['產品名稱', '計價單位', '參考牌價']][:3].to_string())
     return content
 
+# 客製化回應
+def loveAns(loveWord):
+    content = ""
+    if loveWord == "老公在幹嘛":
+        content = "才不告訴你勒，想我就直接說～～"
+    elif loveWord == "我想你":
+        content = "摳米摳米baby～"
+
+
+    return content 
+        
 #確認句子中地點
 def getLocation(sentence):
         taiwan_countynm =['雲林縣', '新竹市', '臺東縣', '嘉義縣', '花蓮縣', '彰化縣', '臺中市', '金門縣',
@@ -329,7 +340,7 @@ def insert_learn(key_words,reply):
     finally:
         if conn is not None:
             conn.close()
-    return "宣皓很聰明的，我已經記住！"
+    return "很聰明的，我已經記住！"
 
 
 #查詢DB是否有回應規則
@@ -476,7 +487,7 @@ def handle_message(event):
     insert_USER_ID(user_id)
     print("user_id =", user_id)
     text = event.message.text
-    love_word = ["我想你","我愛你","你在幹嘛","寶包在幹嘛","老公在幹嘛","寶包","笨蛋"]
+    love_word = ["我想你","我愛你","你在幹嘛","寶包在幹嘛","老公在幹嘛","寶包","笨蛋"]
     ptt_hot = ["八卦","廢文","鄉民"]
     ptt_joke = ["joke","笑話","Joke"]
     ptt_stock = ["Stock","stock","股票討論","ptt股票","股票"]
@@ -602,6 +613,8 @@ def handle_message(event):
         reply_text = air_quality(list(getLocation(text.replace("台","臺")))[0],list(getLocation(text.replace("台","臺")))[1])
     elif getLocation(text.replace("台","臺")) != None and "天氣" in text and "推播" not in text:
         reply_text=weather_query(list(getLocation(text.replace("台","臺")))[1])
+    elif reply_text in love_word:
+        reply_text = loveAns()
     else:
         reply_text = text
 
