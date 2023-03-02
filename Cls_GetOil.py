@@ -5,16 +5,9 @@ import json
 
 __version__ = '1.0'
 
-class OilDataSet:
-    url = 'https://www.cpc.com.tw/'
-    oilprice_url = 'https://www.cpc.com.tw/GetOilPriceJson.aspx'
-    params = {'type': 'TodayOilPriceString'}
-    headers = {
-        'content-type': 'text/html; charset=UTF-8',
-        'user-agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.13 Safari/537.36'
-    }
-
-    def __init__(self, url, oilprice_url, params, headers=headers):
+class OilDataSet(object):
+  
+    def __init__(self, url, oilprice_url, headers, params):
         self.url = url
         self.oilprice_url = oilprice_url
         self.headers = headers
@@ -24,7 +17,7 @@ class OilDataSet:
         try:
             results = {}
             response = requests.get(self.url, headers=self.headers)
-            response_oilprice = requests.get(self.seloilprice_url, headers=self.headers, params=self.params)
+            response_oilprice = requests.get(self.oilprice_url, headers=self.headers, params=self.params)
             soup = BeautifulSoup(response.content, 'html.parser')
             if response.status_code == 200 and response_oilprice.status_code == 200:
                
@@ -57,4 +50,11 @@ class OilDataSet:
 
 
 if __name__ ==  '__main__':
-    OilDataSet.get_oil_price
+    url = 'https://www.cpc.com.tw/'
+    oilprice_url = 'https://www.cpc.com.tw/GetOilPriceJson.aspx'
+    headers = {
+        'content-type': 'text/html; charset=UTF-8',
+        'user-agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.13 Safari/537.36'
+    }
+    params = {'type': 'TodayOilPriceString'}
+    c = OilDataSet(url, oilprice_url, headers, params).get_oil_price()

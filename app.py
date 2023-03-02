@@ -226,13 +226,14 @@ def panx():
 
 # 查詢油價(new)
 def oil_price():
-    
-    #test = OilDataSet('https://data.gov.tw/api/v1/rest/dataset/6339')
-    #content = test.oil_apiConnect()
-    #output DataFrame
-    content = OilDataSet.get_oil_price()
-    #content = str(oilDataFrame[['產品名稱', '計價單位', '參考牌價']][:3].to_string())
-    return content
+    url = 'https://www.cpc.com.tw/'
+    oilprice_url = 'https://www.cpc.com.tw/GetOilPriceJson.aspx'
+    headers = {
+        'content-type': 'text/html; charset=UTF-8',
+        'user-agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.13 Safari/537.36'
+    }
+    params = {'type': 'TodayOilPriceString'}
+    return OilDataSet(url, oilprice_url, headers, params).get_oil_price()
 
 # 客製化回應
 def loveAns(loveWord):
