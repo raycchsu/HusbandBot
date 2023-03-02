@@ -1,45 +1,48 @@
 import traceback
 import requests
-import pandas as pd
+from bs4 import BeautifulSoup
 import json
-import xml.etree.ElementTree as etree
+
+__version__ = '1.0'
 
 class OilDataSet:
-    url = ''
-    UA = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.13 Safari/537.36"
+    url = 'https://www.cpc.com.tw/'
+    oilprice_url = 'https://www.cpc.com.tw/GetOilPriceJson.aspx'
+    params = {'type': 'TodayOilPriceString'}
+    headers = {
+        'content-type': 'text/html; charset=UTF-8',
+        'user-agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.13 Safari/537.36'
+    }
 
-    def __init__(self, url, UA=UA):
+    def __init__(self, url, oilprice_url, params, headers=headers):
         self.url = url
-        self.headers = {'user-agent': UA}
+        self.oilprice_url = oilprice_url
+        self.headers = headers
+        self.params = params
     
     def get_oil_price(self):
         try:
-            requests.session()
-            headers = self.headers
-            root = etree.fromstring(requests.get(self.url, headers=headers).text)
-            columns = ["型別名稱", "產品編號", "產品名稱", "包裝", "銷售對象", "交貨地點", "計價單位", "參考牌價", "營業稅", "貨物稅", "牌價生效時間", "備註"]
-            datatframe = pd.DataFrame(columns = columns)
-            content = ''
-
-            for node in root:
-                typeName = node.find("型別名稱").text if node is not None else None
-                idNum = node.find("產品編號").text if node is not None else None
-                prodName = node.find("產品名稱").text if node is not None else None
-                package = node.find("包裝").text if node is not None else None
-                target = node.find("銷售對象").text if node is not None else None
-                local = node.find("交貨地點").text if node is not None else None
-                unit = node.find("計價單位").text if node is not None else None
-                ref_money = node.find("參考牌價").text if node is not None else None
-                tax_1 = node.find("營業稅").text if node is not None else None
-                tax_2 = node.find("貨物稅").text if node is not None else None
-                time = node.find("牌價生效時間").text if node is not None else None
-                note= node.find("備註").text if node is not None else None
-                datatframe = datatframe.append(pd.Series([typeName, idNum, prodName, package, target, local,unit,ref_money,tax_1, tax_2, time, note], index = columns), ignore_index = True)
+            results = {}
+            response = requests.get(self.url, headers=self.headers)
+            response_oilprice = requests.get(self.seloilprice_url, headers=self.headers, params=self.params)
+            soup = BeautifulSoup(response.content, 'html.parser')
+            if response.status_code == 200 and response_oilprice.status_code == 200:
+               
+                data = json.loads(response_oilprice.text)
+                for row in soup.find_all("b", {"class": "name"})[:6]:
+                    results[row.text] = ''
                 
-                #for Line output string
-                content = content + '{}:{}:{} １%0D%0A'.format(prodName, unit, ref_money)
-            
-            return content
+                results['實施日'] = data['PriceUpdate']
+                results['92無鉛'] = data['sPrice1']
+                results['95無鉛'] = data['sPrice2']
+                results['98無鉛'] = data['sPrice3']
+                results['酒精汽油'] = data['sPrice4']
+                results['超級柴油'] = data['sPrice5']
+                results['液化石油氣'] = data['sPrice6']   
+            else:
+                print('Error: failed to retrieve oil data.')
+
+            return results
             #return datatframe
 
         except (ValueError, EOFError, KeyboardInterrupt):
@@ -51,16 +54,7 @@ class OilDataSet:
             return errorMsg
             #traceback.print_exc()
 
-    ''' API concantenation of government public data '''
-
-    def oil_apiConnect(self):
-        headers = self.headers
-        res = requests.get(self.url, headers = headers)
-        res.encoding='utf-8'
-
-        return json.loads(res.text)
 
 
 if __name__ ==  '__main__':
-    test = GetDataSet('')
-    print(test.get_oil_price().keys)
+    OilDataSet.get_oil_price
