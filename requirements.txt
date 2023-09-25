@@ -10,6 +10,6 @@ random2==1.0.1
 psycopg2==2.8.2
 DateTime==4.3
 APScheduler==3.6.0
-gevent==1.4.0
+gevent==23.9.1
 lxml==3.4.2
 pandas
